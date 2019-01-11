@@ -27,9 +27,9 @@ import javax.sql.DataSource;
 public class CategoriaDAOImpl implements CategoriaDAO {
 
     private static final Logger LOG = Logger.getLogger(CategoriaDAOImpl.class.getName());
-    
+
     private final DataSource pool;
-    
+
     public CategoriaDAOImpl(DataSource pool) {
         this.pool = pool;
     }

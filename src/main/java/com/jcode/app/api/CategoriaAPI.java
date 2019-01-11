@@ -5,7 +5,6 @@
  */
 package com.jcode.app.api;
 
-import com.google.gson.Gson;
 import com.jcode.app.dao.CategoriaDAO;
 import com.jcode.app.dao.impl.CategoriaDAOImpl;
 import com.jcode.app.model.Categoria;
@@ -41,13 +40,11 @@ public class CategoriaAPI {
     private static final Logger LOG = Logger.getLogger(CategoriaAPI.class.getName());
 
     private DataSource pool;
-    private Gson jsonParse;
 
     private CategoriaDAO categoriaDAO;
 
     public CategoriaAPI() {
         try {
-            this.jsonParse = new Gson();
             InitialContext cxt = new InitialContext();
             this.pool = (DataSource) cxt.lookup("java:/comp/env/jdbc/app-rest");
             if (pool != null) {
@@ -74,7 +71,7 @@ public class CategoriaAPI {
         parameters.put("SQL_PAGINATION", " LIMIT " + size + " OFFSET " + (page - 1) * size);
         LOG.info(parameters.toString());
         return Response.status(Response.Status.OK)
-                .entity(jsonParse.toJson(this.categoriaDAO.getPagination(parameters)))
+                .entity(this.categoriaDAO.getPagination(parameters))
                 .build();
     }
 
@@ -84,11 +81,7 @@ public class CategoriaAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Response add(Categoria categoria) throws SQLException {
         LOG.info(categoria.toString());
-        HashMap<String, Object> parameters = new HashMap<>();
-        parameters.put("FILTER", "");
-        parameters.put("SQL_ORDERS", " ORDER BY NOMBRE ASC ");
-        parameters.put("SQL_PAGINATION", " LIMIT 10 OFFSET 0");
-        return Response.status(Response.Status.OK).entity(this.categoriaDAO.add(categoria, parameters)).build();
+        return Response.status(Response.Status.OK).entity(this.categoriaDAO.add(categoria, Utilities.getParametersDefaultBasic())).build();
     }
 
     @Path("/update")
