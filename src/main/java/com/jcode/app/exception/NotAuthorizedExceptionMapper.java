@@ -5,8 +5,7 @@
  */
 package com.jcode.app.exception;
 
-import java.util.Date;
-import javax.ws.rs.ForbiddenException;
+import java.time.LocalDateTime;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -24,7 +23,7 @@ public class NotAuthorizedExceptionMapper implements ExceptionMapper<NotAuthoriz
     @Override
     public Response toResponse(NotAuthorizedException e) {
         return Response.status(Response.Status.UNAUTHORIZED)
-                .entity(new ErrorDetails(new Date(), "Recurso no autorizado", "Usted no se ah autenticado para acceder al recurso solicitado. " + e.getMessage()))
+                .entity(new ErrorDetails(LocalDateTime.now(), "Recurso no autorizado", "Usted no se ah autenticado para acceder al recurso solicitado. " + e.getMessage()))
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

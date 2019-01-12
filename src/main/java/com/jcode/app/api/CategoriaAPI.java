@@ -8,6 +8,7 @@ package com.jcode.app.api;
 import com.jcode.app.dao.CategoriaDAO;
 import com.jcode.app.dao.impl.CategoriaDAOImpl;
 import com.jcode.app.model.Categoria;
+import com.jcode.app.security.annotation.Secured;
 import com.jcode.app.utilities.Utilities;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import java.util.logging.Logger;
 import javax.inject.Singleton;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -26,6 +28,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -42,6 +45,8 @@ public class CategoriaAPI {
     private DataSource pool;
 
     private CategoriaDAO categoriaDAO;
+    //@Context
+    //private HttpServletRequest sr;
 
     public CategoriaAPI() {
         try {
@@ -61,6 +66,7 @@ public class CategoriaAPI {
     @Path("/paginate")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Secured
     public Response paginate(
             @QueryParam("nombre") String nombre,
             @QueryParam("page") Integer page,
@@ -70,6 +76,7 @@ public class CategoriaAPI {
         parameters.put("SQL_ORDERS", " ORDER BY NOMBRE ASC ");
         parameters.put("SQL_PAGINATION", " LIMIT " + size + " OFFSET " + (page - 1) * size);
         LOG.info(parameters.toString());
+        //LOG.info(sr.getRemoteAddr());
         return Response.status(Response.Status.OK)
                 .entity(this.categoriaDAO.getPagination(parameters))
                 .build();

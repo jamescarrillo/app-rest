@@ -6,7 +6,9 @@
 package com.jcode.app.conf;
 
 import javax.ws.rs.ApplicationPath;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 /**
  *
@@ -17,6 +19,9 @@ public class AppConfiguration extends ResourceConfig {
 
     public AppConfiguration() {
         packages("com.jcode.app");
+        register(JacksonFeature.class);
+        //register(JacksonJaxbJsonProvider.class);
+        register(RolesAllowedDynamicFeature.class);
     }
 
 }

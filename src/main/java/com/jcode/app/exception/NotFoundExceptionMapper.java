@@ -5,7 +5,7 @@
  */
 package com.jcode.app.exception;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -16,7 +16,6 @@ import javax.ws.rs.ext.Provider;
  *
  * @author JamesCarrillo
  */
-
 @Provider
 public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundException> {
 
@@ -24,7 +23,7 @@ public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundExceptio
     @Override
     public Response toResponse(NotFoundException e) {
         return Response.status(Response.Status.NOT_FOUND)
-                .entity(new ErrorDetails(new Date(), "Página no encontrada", "No se encontró el recurso solicitado. " + e.getMessage()))
+                .entity(new ErrorDetails(LocalDateTime.now(), "Recurso no encontrado", "No se encontró el recurso solicitado. " + e.getMessage()))
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

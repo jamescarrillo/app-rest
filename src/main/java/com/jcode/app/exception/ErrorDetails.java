@@ -6,7 +6,12 @@
 package com.jcode.app.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.util.Date;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -14,34 +19,36 @@ import java.util.Date;
  */
 public class ErrorDetails {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss z")
-    private Date date;
-    private String message;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime date;
+    private String mensaje;
     private String details;
 
     public ErrorDetails() {
     }
 
-    public ErrorDetails(Date date, String message, String details) {
+    public ErrorDetails(LocalDateTime date, String mensaje, String details) {
         this.date = date;
-        this.message = message;
+        this.mensaje = mensaje;
         this.details = details;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMensaje() {
+        return mensaje;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
 
     public String getDetails() {

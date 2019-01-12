@@ -1,5 +1,8 @@
 package com.jcode.app.utilities;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BeanCrud {
 
     private String messageServer;

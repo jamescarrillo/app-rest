@@ -7,8 +7,8 @@ public class Utilities {
     public static HashMap<String, Object> getParametersDefaultBasic() {
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("FILTER", "");
-        parameters.put("PAGE", 1);
-        parameters.put("SIZE", 10);
+        parameters.put("SQL_ORDERS", " ORDER BY NOMBRE ASC ");
+        parameters.put("SQL_PAGINATION", " LIMIT 10  OFFSET 0");
         return parameters;
     }
 

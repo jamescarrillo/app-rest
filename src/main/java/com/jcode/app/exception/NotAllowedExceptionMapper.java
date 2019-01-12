@@ -5,7 +5,7 @@
  */
 package com.jcode.app.exception;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.ws.rs.NotAllowedException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -23,7 +23,7 @@ public class NotAllowedExceptionMapper implements ExceptionMapper<NotAllowedExce
     @Override
     public Response toResponse(NotAllowedException e) {
         return Response.status(Response.Status.METHOD_NOT_ALLOWED)
-                .entity(new ErrorDetails(new Date(), "Método no permitido", e.getMessage()))
+                .entity(new ErrorDetails(LocalDateTime.now(), "Método no permitido", e.getMessage()))
                 .type(MediaType.APPLICATION_JSON).build();
     }
 

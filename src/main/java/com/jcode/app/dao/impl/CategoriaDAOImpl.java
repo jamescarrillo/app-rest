@@ -59,6 +59,10 @@ public class CategoriaDAOImpl implements CategoriaDAO {
                         Categoria categoria = new Categoria();
                         categoria.setIdcategoria(rs.getInt("IDCATEGORIA"));
                         categoria.setNombre(rs.getString("NOMBRE"));
+                        //LOG.info(rs.getTimestamp("FECHA").toLocalDateTime().toString());
+                        if (rs.getTimestamp("FECHA") != null) {
+                            categoria.setFecha(rs.getTimestamp("FECHA").toLocalDateTime());
+                        }
                         list.add(categoria);
                     }
                 }
@@ -157,6 +161,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
         try (Connection conn = this.pool.getConnection();
                 SQLCloseable finish = conn::rollback;) {
             conn.setAutoCommit(false);
+            /*
             pst = conn.prepareStatement("SELECT COUNT(IDCATEGORIA) AS COUNT FROM PRODUCTO WHERE IDCATEGORIA = ?");
             pst.setInt(1, id.intValue());
             rs = pst.executeQuery();
@@ -173,8 +178,16 @@ public class CategoriaDAOImpl implements CategoriaDAO {
                     beanCrud.setMessageServer("No se eliminó, existe una Producto asociado a esta Categoria");
                 }
             }
+             */
+            pst = conn.prepareStatement("DELETE FROM CATEGORIA WHERE IDCATEGORIA = ?");
+            pst.setInt(1, id.intValue());
+            LOG.info(pst.toString());
+            pst.executeUpdate();
+            conn.commit();
+            beanCrud.setMessageServer("ok");
+            beanCrud.setBeanPagination(getPagination(parameters, conn));
             pst.close();
-            rs.close();
+            //rs.close();
         } catch (SQLException e) {
             throw e;
         }

@@ -5,7 +5,7 @@
  */
 package com.jcode.app.exception;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -23,7 +23,7 @@ public class ForbiddenExceptionMapper implements ExceptionMapper<ForbiddenExcept
     @Override
     public Response toResponse(ForbiddenException e) {
         return Response.status(Response.Status.FORBIDDEN)
-                .entity(new ErrorDetails(new Date(), "Recurso inaccesible", "Usted no tiene permisos para acceder a este recurso. " + e.getMessage()))
+                .entity(new ErrorDetails(LocalDateTime.now(), "Recurso inaccesible", "Usted no tiene permisos para acceder a este recurso. " + e.getMessage()))
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }
