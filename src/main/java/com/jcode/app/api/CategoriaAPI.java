@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Singleton;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -28,7 +29,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -38,6 +38,7 @@ import javax.ws.rs.core.Response;
  */
 @Singleton
 @Path("/categorias")
+@Secured
 public class CategoriaAPI {
 
     private static final Logger LOG = Logger.getLogger(CategoriaAPI.class.getName());
@@ -66,7 +67,6 @@ public class CategoriaAPI {
     @Path("/paginate")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Secured
     public Response paginate(
             @QueryParam("nombre") String nombre,
             @QueryParam("page") Integer page,

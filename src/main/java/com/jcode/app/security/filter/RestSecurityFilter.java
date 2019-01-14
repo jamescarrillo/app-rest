@@ -34,9 +34,9 @@ import javax.ws.rs.ext.Provider;
  *
  * @author JamesCarrillo
  */
-@Provider
-@Secured
-@Priority(Priorities.AUTHENTICATION)
+//@Provider
+//@Secured
+//@Priority(Priorities.AUTHENTICATION)
 public class RestSecurityFilter implements ContainerRequestFilter {
 
     private static final Logger LOG = Logger.getLogger(RestSecurityFilter.class.getName());
@@ -44,6 +44,9 @@ public class RestSecurityFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext crc) throws IOException {
+        LOG.info("VA IMPRIMIR URI INFO XD");
+        LOG.info(crc.getUriInfo().getPath());
+        LOG.info(crc.getUriInfo().getBaseUri().getHost());
         try {
             LOG.info("Inicializando Filter");
             String authorizationHeader = crc.getHeaderString(HttpHeaders.AUTHORIZATION);
@@ -57,9 +60,7 @@ public class RestSecurityFilter implements ContainerRequestFilter {
                 usuario.setRoles(Arrays.asList(roles.split(",")));
                 MyApplicationSecurityContext secContext = new MyApplicationSecurityContext(usuario, crc.getSecurityContext().isSecure());
                 crc.setSecurityContext(secContext);
-                LOG.info("VA IMPRIMIR URI INFO XD");
-                LOG.info(crc.getUriInfo().getPath());
-                LOG.info(crc.getUriInfo().getBaseUri().getHost());
+
                 List<String> menus = (java.util.ArrayList) claims.getBody().get("menus");
                 LOG.info(String.valueOf(menus.size()));
             } else {
