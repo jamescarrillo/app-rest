@@ -34,13 +34,16 @@ import javax.ws.rs.ext.Provider;
  *
  * @author JamesCarrillo
  */
-//@Provider
-//@Secured
-//@Priority(Priorities.AUTHENTICATION)
+@Provider
+@Secured
+@Priority(Priorities.AUTHENTICATION)
 public class RestSecurityFilter implements ContainerRequestFilter {
 
     private static final Logger LOG = Logger.getLogger(RestSecurityFilter.class.getName());
     public static final Key KEY = MacProvider.generateKey();
+
+    public RestSecurityFilter() {
+    }
 
     @Override
     public void filter(ContainerRequestContext crc) throws IOException {
@@ -54,15 +57,17 @@ public class RestSecurityFilter implements ContainerRequestFilter {
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 String token = authorizationHeader.substring("Bearer".length()).trim();
                 Jws<Claims> claims = Jwts.parser().setSigningKey(KEY).parseClaimsJws(token);
+               
                 Usuario usuario = new Usuario();
                 usuario.setNombre(claims.getBody().getSubject());
                 String roles = (String) claims.getBody().get("roles");
                 usuario.setRoles(Arrays.asList(roles.split(",")));
+                
                 MyApplicationSecurityContext secContext = new MyApplicationSecurityContext(usuario, crc.getSecurityContext().isSecure());
                 crc.setSecurityContext(secContext);
 
-                List<String> menus = (java.util.ArrayList) claims.getBody().get("menus");
-                LOG.info(String.valueOf(menus.size()));
+                //List<String> menus = (java.util.ArrayList) claims.getBody().get("menus");
+                //LOG.info(String.valueOf(menus.size()));
             } else {
                 throw new NotAuthorizedException("Bearer");
             }

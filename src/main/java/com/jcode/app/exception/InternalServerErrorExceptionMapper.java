@@ -14,7 +14,7 @@ import javax.ws.rs.ext.Provider;
  *
  * @author JamesCarrillo
  */
-@Provider
+//@Provider
 public class InternalServerErrorExceptionMapper implements javax.ws.rs.ext.ExceptionMapper<Exception> {
 
     /*500*/

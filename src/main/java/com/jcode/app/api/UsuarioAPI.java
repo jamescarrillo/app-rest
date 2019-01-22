@@ -37,17 +37,20 @@ public class UsuarioAPI {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@FormParam("login") String login, @FormParam("password") String password) {
+        /*
         List<String> menus = new ArrayList<>();
         for (int i = 0; i < 40; i++) {
             menus.add("menu " + i);
         }
-        String token = issueToken(login, "ADMIN", menus);
+         */
+        String token = issueToken(login, "ADMIN", null);
         HashMap<String, Object> JSON = new HashMap<>();
         JSON.put("token", token);
         JSON.put("usuario", "James Carrillo");
         JSON.put("items", "producto,categorias,marcas");
         JSON.put("roles", "admin");
-        JSON.put("menus", menus);
+        
+        //JSON.put("menus", menus);
         return Response.status(Response.Status.OK).entity(JSON).build();
     }
 

@@ -5,4 +5,9 @@
               type="javax.sql.DataSource" url="jdbc:postgresql://localhost:5432/dbapp-rest" 
               username="postgres">
     </Resource>
+    <!--Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="100" 
+              maxIdle="100" maxWait="40000" name="jdbc/app-rest" password="IPTgqg10111" 
+              type="javax.sql.DataSource" url="jdbc:postgresql://node40582-rest-full.atl.jelastic.vps-host.net:5432/dbapp-rest" 
+              username="webadmin">
+    </Resource-->
 </Context>
