@@ -103,16 +103,20 @@ public class CategoriaDAOImpl implements CategoriaDAO {
         try (Connection conn = this.pool.getConnection();
                 SQLCloseable finish = conn::rollback;) {
             conn.setAutoCommit(false);
-            pst = conn.prepareStatement("SELECT COUNT(IDCATEGORIA) AS COUNT FROM CATEGORIA WHERE NOMBRE = ?");
+            StringBuilder sSQL = new StringBuilder();
+            sSQL.append("SELECT COUNT(IDCATEGORIA) AS COUNT FROM CATEGORIA WHERE NOMBRE = ?");
+            pst = conn.prepareStatement(sSQL.toString());
             pst.setString(1, t.getNombre());
             rs = pst.executeQuery();
             while (rs.next()) {
                 if (rs.getInt("COUNT") == 0) {
-                    LOG.info("INSERTO CON TIMEZONE");
-                    pst = conn.prepareStatement("set timezone to 'America/Lima'; INSERT INTO CATEGORIA(NOMBRE,FECHA,FECHA_HORA) VALUES(?,?,NOW())");
+                    sSQL.setLength(0);
+                    /*SI LLAMAN A LA FUNCION NOW() ADD AL sSQL -> SET TIMEZONE TO 'America/Lima';  */
+                    sSQL.append("INSERT INTO CATEGORIA(NOMBRE,FECHA,FECHA_HORA) VALUES(?,?,?)");
+                    pst = conn.prepareStatement(sSQL.toString());
                     pst.setString(1, t.getNombre());
                     pst.setDate(2, UtilDateApp.getDate(t.getFecha()));
-                    //pst.setTimestamp(3, UtilDateApp.getTimestamp(t.getFecha_hora()));
+                    pst.setTimestamp(3, UtilDateApp.getTimestamp(t.getFecha_hora()));
                     LOG.info(pst.toString());
                     pst.executeUpdate();
                     conn.commit();
@@ -129,7 +133,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
         }
         return beanCrud;
     }
-    
+
     /*
     UPDATE
     {
@@ -138,8 +142,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 	"fecha": "21/09/2019",
 	"fecha_hora": "10/09/2018 14:20:00"
     }
-    */
-    
+     */
     @Override
     public BeanCrud update(Categoria t, HashMap<String, Object> parameters) throws SQLException {
         BeanCrud beanCrud = new BeanCrud();
@@ -148,13 +151,17 @@ public class CategoriaDAOImpl implements CategoriaDAO {
         try (Connection conn = this.pool.getConnection();
                 SQLCloseable finish = conn::rollback;) {
             conn.setAutoCommit(false);
-            pst = conn.prepareStatement("SELECT COUNT(IDCATEGORIA) AS COUNT FROM CATEGORIA WHERE NOMBRE = ? AND IDCATEGORIA != ?");
+            StringBuilder sSQL = new StringBuilder();
+            sSQL.append("SELECT COUNT(IDCATEGORIA) AS COUNT FROM CATEGORIA WHERE NOMBRE = ? AND IDCATEGORIA != ?");
+            pst = conn.prepareStatement(sSQL.toString());
             pst.setString(1, t.getNombre());
             pst.setInt(2, t.getIdcategoria());
             rs = pst.executeQuery();
             while (rs.next()) {
                 if (rs.getInt("COUNT") == 0) {
-                    pst = conn.prepareStatement("UPDATE CATEGORIA SET NOMBRE = ?, FECHA = ?, FECHA_HORA = ? WHERE IDCATEGORIA = ?");
+                    sSQL.setLength(0);
+                    sSQL.append("UPDATE CATEGORIA SET NOMBRE = ?, FECHA = ?, FECHA_HORA = ? WHERE IDCATEGORIA = ?");
+                    pst = conn.prepareStatement(sSQL.toString());
                     pst.setString(1, t.getNombre());
                     pst.setDate(2, UtilDateApp.getDate(t.getFecha()));
                     pst.setTimestamp(3, UtilDateApp.getTimestamp(t.getFecha_hora()));
