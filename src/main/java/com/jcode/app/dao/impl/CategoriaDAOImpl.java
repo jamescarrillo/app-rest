@@ -108,10 +108,10 @@ public class CategoriaDAOImpl implements CategoriaDAO {
             rs = pst.executeQuery();
             while (rs.next()) {
                 if (rs.getInt("COUNT") == 0) {
-                    pst = conn.prepareStatement("INSERT INTO CATEGORIA(NOMBRE,FECHA,FECHA_HORA) VALUES(?,?,?)");
+                    pst = conn.prepareStatement("INSERT INTO CATEGORIA(NOMBRE,FECHA,FECHA_HORA) VALUES(?,?,NOW())");
                     pst.setString(1, t.getNombre());
                     pst.setDate(2, UtilDateApp.getDate(t.getFecha()));
-                    pst.setTimestamp(3, UtilDateApp.getTimestamp(t.getFecha_hora()));
+                    //pst.setTimestamp(3, UtilDateApp.getTimestamp(t.getFecha_hora()));
                     LOG.info(pst.toString());
                     pst.executeUpdate();
                     conn.commit();
