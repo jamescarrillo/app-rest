@@ -5,7 +5,6 @@
  */
 package com.jcode.app.security.filter;
 
-import com.jcode.app.exception.ErrorDetails;
 import com.jcode.app.security.annotation.Secured;
 import com.jcode.app.model.Usuario;
 import com.jcode.app.security.MyApplicationSecurityContext;
@@ -20,7 +19,6 @@ import io.jsonwebtoken.impl.crypto.MacProvider;
 import java.io.IOException;
 import java.security.Key;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.Priority;
 import javax.ws.rs.NotAuthorizedException;
@@ -34,9 +32,9 @@ import javax.ws.rs.ext.Provider;
  *
  * @author JamesCarrillo
  */
-@Provider
-@Secured
-@Priority(Priorities.AUTHENTICATION)
+//@Provider
+//@Secured
+//@Priority(Priorities.AUTHENTICATION)
 public class RestSecurityFilter implements ContainerRequestFilter {
 
     private static final Logger LOG = Logger.getLogger(RestSecurityFilter.class.getName());
@@ -47,9 +45,6 @@ public class RestSecurityFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext crc) throws IOException {
-        LOG.info("VA IMPRIMIR URI INFO XD");
-        LOG.info(crc.getUriInfo().getPath());
-        LOG.info(crc.getUriInfo().getBaseUri().getHost());
         try {
             LOG.info("Inicializando Filter");
             String authorizationHeader = crc.getHeaderString(HttpHeaders.AUTHORIZATION);
@@ -66,8 +61,6 @@ public class RestSecurityFilter implements ContainerRequestFilter {
                 MyApplicationSecurityContext secContext = new MyApplicationSecurityContext(usuario, crc.getSecurityContext().isSecure());
                 crc.setSecurityContext(secContext);
 
-                //List<String> menus = (java.util.ArrayList) claims.getBody().get("menus");
-                //LOG.info(String.valueOf(menus.size()));
             } else {
                 throw new NotAuthorizedException("Bearer");
             }

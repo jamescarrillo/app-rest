@@ -10,6 +10,7 @@ import com.jcode.app.dao.SQLCloseable;
 import com.jcode.app.model.Categoria;
 import com.jcode.app.utilities.BeanCrud;
 import com.jcode.app.utilities.BeanPagination;
+import com.jcode.app.utilities.UtilDateApp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,10 +60,8 @@ public class CategoriaDAOImpl implements CategoriaDAO {
                         Categoria categoria = new Categoria();
                         categoria.setIdcategoria(rs.getInt("IDCATEGORIA"));
                         categoria.setNombre(rs.getString("NOMBRE"));
-                        //LOG.info(rs.getTimestamp("FECHA").toLocalDateTime().toString());
-                        if (rs.getTimestamp("FECHA") != null) {
-                            categoria.setFecha(rs.getTimestamp("FECHA").toLocalDateTime());
-                        }
+                        categoria.setFecha(UtilDateApp.getLocalDate(rs.getDate("FECHA")));
+                        categoria.setFecha_hora(UtilDateApp.getLocalDateTime(rs.getTimestamp("FECHA_HORA")));
                         list.add(categoria);
                     }
                 }
@@ -87,6 +86,15 @@ public class CategoriaDAOImpl implements CategoriaDAO {
         return beanCrud;
     }
 
+    /*
+    JSON PARA ADD
+    {
+	"idcategoria": 0,
+	"nombre": "COMIDAS",
+	"fecha": "21/09/2018",
+	"fecha_hora": "10/09/2018 14:20:00"
+    }  
+     */
     @Override
     public BeanCrud add(Categoria t, HashMap<String, Object> parameters) throws SQLException {
         BeanCrud beanCrud = new BeanCrud();
@@ -100,8 +108,10 @@ public class CategoriaDAOImpl implements CategoriaDAO {
             rs = pst.executeQuery();
             while (rs.next()) {
                 if (rs.getInt("COUNT") == 0) {
-                    pst = conn.prepareStatement("INSERT INTO CATEGORIA(NOMBRE) VALUES(?)");
+                    pst = conn.prepareStatement("INSERT INTO CATEGORIA(NOMBRE,FECHA,FECHA_HORA) VALUES(?,?,?)");
                     pst.setString(1, t.getNombre());
+                    pst.setDate(2, UtilDateApp.getDate(t.getFecha()));
+                    pst.setTimestamp(3, UtilDateApp.getTimestamp(t.getFecha_hora()));
                     LOG.info(pst.toString());
                     pst.executeUpdate();
                     conn.commit();
@@ -118,7 +128,17 @@ public class CategoriaDAOImpl implements CategoriaDAO {
         }
         return beanCrud;
     }
-
+    
+    /*
+    UPDATE
+    {
+	"idcategoria": 1,
+	"nombre": "COMIDAS ",
+	"fecha": "21/09/2019",
+	"fecha_hora": "10/09/2018 14:20:00"
+    }
+    */
+    
     @Override
     public BeanCrud update(Categoria t, HashMap<String, Object> parameters) throws SQLException {
         BeanCrud beanCrud = new BeanCrud();
@@ -133,9 +153,11 @@ public class CategoriaDAOImpl implements CategoriaDAO {
             rs = pst.executeQuery();
             while (rs.next()) {
                 if (rs.getInt("COUNT") == 0) {
-                    pst = conn.prepareStatement("UPDATE CATEGORIA SET NOMBRE = ? WHERE IDCATEGORIA = ?");
+                    pst = conn.prepareStatement("UPDATE CATEGORIA SET NOMBRE = ?, FECHA = ?, FECHA_HORA = ? WHERE IDCATEGORIA = ?");
                     pst.setString(1, t.getNombre());
-                    pst.setInt(2, t.getIdcategoria());
+                    pst.setDate(2, UtilDateApp.getDate(t.getFecha()));
+                    pst.setTimestamp(3, UtilDateApp.getTimestamp(t.getFecha_hora()));
+                    pst.setInt(4, t.getIdcategoria());
                     LOG.info(pst.toString());
                     pst.executeUpdate();
                     conn.commit();
