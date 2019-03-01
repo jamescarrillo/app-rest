@@ -15,11 +15,17 @@
     </properties>
     
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.2</version>
+            <version>42.2.5</version>
         </dependency>
+        <!--dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.2</version>
+        </dependency-->
         <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-servlet -->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>

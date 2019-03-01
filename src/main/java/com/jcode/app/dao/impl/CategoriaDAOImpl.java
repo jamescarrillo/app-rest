@@ -15,9 +15,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 
@@ -112,11 +114,12 @@ public class CategoriaDAOImpl implements CategoriaDAO {
                 if (rs.getInt("COUNT") == 0) {
                     sSQL.setLength(0);
                     /*SI LLAMAN A LA FUNCION NOW() ADD AL sSQL -> SET TIMEZONE TO 'America/Lima';  */
-                    sSQL.append("INSERT INTO CATEGORIA(NOMBRE,FECHA,FECHA_HORA) VALUES(?,?,?)");
+                    sSQL.append("SET TIMEZONE TO 'America/Lima'; ");
+                    sSQL.append("INSERT INTO CATEGORIA(NOMBRE,FECHA,FECHA_HORA) VALUES(?,?,NOW())");
                     pst = conn.prepareStatement(sSQL.toString());
                     pst.setString(1, t.getNombre());
                     pst.setDate(2, UtilDateApp.getDate(t.getFecha()));
-                    pst.setTimestamp(3, UtilDateApp.getTimestamp(t.getFecha_hora()));
+                    //pst.setTimestamp(3, UtilDateApp.getTimestamp(t.getFecha_hora()));
                     LOG.info(pst.toString());
                     pst.executeUpdate();
                     conn.commit();
