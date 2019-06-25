@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/app-rest">
-    <Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="100" 
+    <!--Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="100" 
               maxIdle="100" maxWait="40000" name="jdbc/app-rest" password="root" 
               type="javax.sql.DataSource" url="jdbc:postgresql://localhost:5432/dbapp-rest" 
               username="postgres">
-    </Resource>
-    <!--Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="100" 
-              maxIdle="100" maxWait="40000" name="jdbc/app-rest" password="IPTgqg10111" 
-              type="javax.sql.DataSource" url="jdbc:postgresql://node40582-rest-full.atl.jelastic.vps-host.net:5432/dbapp-rest" 
-              username="webadmin">
     </Resource-->
+    <Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="100" 
+              maxIdle="100" maxWait="40000" name="jdbc/app-rest" password="dea0b673530777c17a438cc61ed85bbafde1fe0efe60aecfd34d772ea2349a42" 
+              type="javax.sql.DataSource" url="jdbc:postgresql://ec2-50-19-222-129.compute-1.amazonaws.com:5432/df5smfapobj38j" 
+              username="qcjduskxzdxsie">
+    </Resource>
 </Context>

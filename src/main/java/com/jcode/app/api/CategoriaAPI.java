@@ -38,7 +38,7 @@ import javax.ws.rs.core.Response;
  */
 @Singleton
 @Path("/categorias")
-@Secured
+//@Secured
 public class CategoriaAPI {
 
     private static final Logger LOG = Logger.getLogger(CategoriaAPI.class.getName());
